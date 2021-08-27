@@ -24,6 +24,6 @@ clip_grad: 2.0
 momentum_teacher: 0.9994
 
 device: cuda:0
-data_path: data/imagenette/train
+data_path: ../../input/imagenette/train
 model_path: data
 model_name: saved_model
