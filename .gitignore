@@ -133,3 +133,5 @@ dmypy.json
 imagenette/
 
 settings.json
+
+logs/
