@@ -84,7 +84,7 @@ def main():
 
     # Tensorboard Summarywriter for logging
     writer = SummaryWriter(logging_path)
-    writer.add_text("Configuration", json.dumps(vars(config)))
+    writer.add_text("Configuration", json.dumps(config))
 
     # Specify the models
     backbone = VisionTransformer(
