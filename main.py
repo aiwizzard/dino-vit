@@ -127,6 +127,11 @@ def main():
 
     dataset_len = len(dataset)
 
+    # to save the configs with torch.save()
+    config_list = []
+    for item in config.item():
+        config_list.append(item)
+
     for epoch in range(config["n_epochs"]):
         train(
             epoch,
@@ -137,6 +142,7 @@ def main():
             optimizer,
             device,
             config,
+            config_list,
             writer,
             dataset_len,
             label_mapping,
@@ -155,6 +161,7 @@ def train(
     optimizer,
     device,
     config,
+    config_list,
     writer,
     dataset_len,
     label_mapping,
@@ -225,7 +232,7 @@ def train(
             "teacher": teacher.parameters(),
             "optimizer": optimizer.state_dict(),
             "loss": dino_loss.state_dict(),
-            "config": config,
+            "config": config_list,
         },
         f"{config['model_path']}/{config['model_name']}.pth",
     )
