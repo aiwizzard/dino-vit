@@ -1,7 +1,7 @@
 batch_size: 32
 batch_size_eval: 64
 n_epochs:  100
-num_workers: 4
+num_workers: 2
 logging_freq: 200
 
 n_classes: 0
