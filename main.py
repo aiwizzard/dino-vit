@@ -7,12 +7,11 @@ import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
+
+# to fix the issue AttributeError: module 'tensorflow._api.v2.io.gfile' 
+# has no attribute 'get_filesystem'
 import tensorflow as tf
 import tensorboard as tb
-
-# to fix the issue line 801, in add_embedding
-# fs = tf.io.gfile.get_filesystem(save_path)
-# AttributeError: module 'tensorflow._api.v2.io.gfile' has no attribute 'get_filesystem'
 tf.io.gfile = tb.compat.tensorflow_stub.io.gfile
 
 from tqdm import tqdm
