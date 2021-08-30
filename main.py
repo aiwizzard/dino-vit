@@ -129,7 +129,11 @@ def main():
 
     # to save the configs with torch.save()
     config_list = []
+<<<<<<< HEAD
     for item in config.items():
+=======
+    for item in config.item():
+>>>>>>> 757d86e1d8cc3b8f30888d6c2a37fa39afc03c45
         config_list.append(item)
 
     for epoch in range(config["n_epochs"]):
