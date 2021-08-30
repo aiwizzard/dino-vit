@@ -39,7 +39,7 @@ def compute_knn(backbone, data_loader_train, data_loader_val):
 def compute_embedding(backbone, data_loader):
     r"""Compute CLS embedding and prepare for Tensorboard
     """
-    device = next(backbone.parmeters()).device
+    device = next(backbone.parameters()).device
 
     embs_list = []
     imgs_list = []
