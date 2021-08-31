@@ -224,7 +224,6 @@ def train(
             "student": student.parameters(),
             "teacher": teacher.parameters(),
             "optimizer": optimizer.state_dict(),
-            "loss": dino_loss.state_dict(),
         },
         f"{config['model_path']}/{config['model_name']}.pth",
     )
