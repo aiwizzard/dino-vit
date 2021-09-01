@@ -29,6 +29,6 @@ device: cuda:0
 data_path_train: ../../input/imagenette/imagenette/train
 data_path_val: ../../input/imagenette/imagenette/val
 model_path: data
-model_name: saved_model
+model_name: checkpoint
 labels_path: data/labels.json
 logging_path: logs
