@@ -8,10 +8,11 @@ from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
 
-# to fix the issue AttributeError: module 'tensorflow._api.v2.io.gfile' 
+# to fix the issue AttributeError: module 'tensorflow._api.v2.io.gfile'
 # has no attribute 'get_filesystem'
 import tensorflow as tf
 import tensorboard as tb
+
 tf.io.gfile = tb.compat.tensorflow_stub.io.gfile
 
 from tqdm import tqdm
@@ -144,6 +145,17 @@ def main():
             data_loader_val_wna,
             data_loader_val_wna_subset,
         )
+        torch.save(
+            {
+                "epoch": epoch + 1,
+                "student": student.parameters(),
+                "teacher": teacher.parameters(),
+                "optimizer": optimizer.state_dict(),
+                "loss": dino_loss.state_dict(),
+                "config": config,
+            },
+            f"{config['model_path']}/{config['model_name']}.pth",
+        )
 
 
 def train(
@@ -213,20 +225,10 @@ def train(
 
             pbar.update(1)
             pbar.set_postfix_str(f"loss: {loss:.5f}")
-            
+
             writer.add_scalar("train_loss", loss, n_steps)
 
             n_steps += 1
-
-    torch.save(
-        {
-            "epoch": epoch + 1,
-            "student": student.parameters(),
-            "teacher": teacher.parameters(),
-            "optimizer": optimizer.state_dict(),
-        },
-        f"{config['model_path']}/{config['model_name']}.pth",
-    )
 
 
 if __name__ == "__main__":
