@@ -179,28 +179,6 @@ def train(
         n_steps = 0
         best_acc = 0
         for images, _ in data_loader:
-            student.train()
-            # Train
-            images = [img.to(device) for img in images]
-            teacher_output = teacher(images[:2])
-            student_ouptut = student(images)
-            loss = dino_loss(teacher_output, student_ouptut).to(device)
-
-            optimizer.zero_grad()
-            loss.backward()
-            clip_gradients(student, clip=config["clip_grad"])
-            optimizer.step()
-
-            with torch.no_grad():
-                # Note: Cosine Scheduler is ignored for now, might add later
-                for t_params, s_params in zip(
-                    teacher.parameters(), student.parameters()
-                ):
-                    t_params.data.mul_(config["momentum_teacher"])
-                    t_params.data.add_(
-                        (1 - config["momentum_teacher"]) * s_params.detach().data
-                    )
-
             if n_steps % config["logging_freq"] == 0:
                 student.eval()
 
@@ -222,6 +200,29 @@ def train(
                 writer.add_scalar("knn-accuracy", current_acc, n_steps)
                 if current_acc > best_acc:
                     best_acc = current_acc
+
+                student.train()
+                
+            # Train
+            images = [img.to(device) for img in images]
+            teacher_output = teacher(images[:2])
+            student_ouptut = student(images)
+            loss = dino_loss(teacher_output, student_ouptut).to(device)
+
+            optimizer.zero_grad()
+            loss.backward()
+            clip_gradients(student, clip=config["clip_grad"])
+            optimizer.step()
+
+            with torch.no_grad():
+                # Note: Cosine Scheduler is ignored for now, might add later
+                for t_params, s_params in zip(
+                    teacher.parameters(), student.parameters()
+                ):
+                    t_params.data.mul_(config["momentum_teacher"])
+                    t_params.data.add_(
+                        (1 - config["momentum_teacher"]) * s_params.detach().data
+                    )
 
             pbar.update(1)
             pbar.set_postfix_str(f"loss: {loss:.5f}")
