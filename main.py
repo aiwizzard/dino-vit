@@ -148,8 +148,8 @@ def main():
         torch.save(
             {
                 "epoch": epoch + 1,
-                "student": student.parameters(),
-                "teacher": teacher.parameters(),
+                "student": student.state_dict(),
+                "teacher": teacher.state_dict(),
                 "optimizer": optimizer.state_dict(),
                 "loss": dino_loss.state_dict(),
                 "config": config,
